@@ -9,7 +9,6 @@ from django.db.models import Q
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def home(request):
     endpoints = ['/api/todos/', '/api/todos/?query=task', '/api/todo/1/', '/api/todo/1/delete', '/api/todo/1/update/']
     return Response(endpoints)

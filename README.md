@@ -5,6 +5,7 @@ Is a Django Rest Framework (DRF) API designed for simplifying user authenticatio
 
 ### Features
 - JWT-based authentication and authorization
+- React App for CRUD Demonstration
 - ect
 
 ### Getting Started

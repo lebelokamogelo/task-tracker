@@ -9,7 +9,7 @@ headers = {
 data = {
     "title": "Testing",
     "description": "Testing the authentication",
-    "status": False,
+    "completed": False,
     "priority": "Medium"
 }
 
