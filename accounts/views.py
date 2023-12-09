@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 import requests
 
 
@@ -29,7 +30,7 @@ def login_user(request):
     response = requests.post('http://localhost:8000/api/token/', json={'username': username, 'password': password})
     if user and response.status_code == 200:
         login(request, user)
-        return Response({'success': True, "access": response.json()['access']}, status=status.HTTP_202_ACCEPTED)
+        return Response({'success': True, "access": response.json()['access'], "refresh": response.json()['refresh']}, status=status.HTTP_202_ACCEPTED)
     else:
         return Response({'error_message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -37,5 +38,7 @@ def login_user(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_user(request):
+    token = RefreshToken(request.data.get('refresh_token'))
+    token.blacklist()
     logout(request)
     return Response({'success': True}, status=status.HTTP_200_OK)
