@@ -59,13 +59,19 @@ export default function HomePage() {
       Authorization: "Bearer " + access,
     }
 
+     const data = {
+      refresh_token: localStorage.getItem("refresh")
+    }
+
     axios({
       method: "post",
       url: url,
       headers: headers,
+      data: data
     })
       .then(() => {
         localStorage.removeItem("access")
+        localStorage.removeItem("refresh")
         navigate("/login")
       })
       .catch((error) => {

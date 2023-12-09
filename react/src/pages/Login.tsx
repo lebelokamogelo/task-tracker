@@ -16,7 +16,9 @@ export default function Login() {
       .then((res) => res.data)
       .then((data) => {
         const access = data["access"]
+        const refresh = data["refresh"]
         localStorage.setItem("access", access)
+        localStorage.setItem("refresh", refresh)
         navigate("/")
       })
       .catch((err) => {
