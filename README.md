@@ -1,4 +1,4 @@
-## Task Tracker
+## Todo API
 
 ### Overview
 Is a Django Rest Framework (DRF) API designed for simplifying user authentication and authorization.
