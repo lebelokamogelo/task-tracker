@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from .models import User
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -23,11 +23,11 @@ def create_account(request):
 
 @api_view(['POST'])
 def login_user(request):
-    username = request.data.get('username')
+    email = request.data.get('email')
     password = request.data.get('password')
 
-    user = authenticate(request, username=username, password=password)
-    response = requests.post('http://localhost:8000/api/token/', json={'username': username, 'password': password})
+    user = authenticate(request, email=email, password=password)
+    response = requests.post('http://localhost:8000/api/token/', json={'email': email, 'password': password})
     if user and response.status_code == 200:
         login(request, user)
         return Response({'success': True, "access": response.json()['access'], "refresh": response.json()['refresh']}, status=status.HTTP_202_ACCEPTED)

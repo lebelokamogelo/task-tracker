@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Task
-from .serializers import TaskSerializer
+from .models import Todo
+from .serializers import TodoSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from django.db.models import Q
@@ -10,7 +10,7 @@ from django.db.models import Q
 
 @api_view(['GET'])
 def home(request):
-    endpoints = ['/api/todos/', '/api/todos/?query=task', '/api/todo/1/', '/api/todo/1/delete', '/api/todo/1/update/']
+    endpoints = ['/api/todos/', '/api/todos/?query=todo', '/api/todo/1/', '/api/todo/1/delete', '/api/todo/1/update/']
     return Response(endpoints)
 
 @api_view(['GET', 'POST'])
@@ -21,32 +21,32 @@ def todos(request):
         query = request.GET.get('query')
         if query is not None:
             search = ((Q(title=query) | Q(description__icontains=query)) & Q(user=request.user))
-            queryset = Task.objects.filter(search)
+            queryset = Todo.objects.filter(search)
         else:
-            queryset = Task.objects.filter(user=request.user)
+            queryset = Todo.objects.filter(user=request.user)
 
     elif request.method == 'POST':
         request_data = request.data
-        serializer = TaskSerializer(data=request_data)
+        serializer = TodoSerializer(data=request_data)
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors)
-    serializer = TaskSerializer(queryset, many=True)
+    serializer = TodoSerializer(queryset, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def todo(request, pk):
-    queryset = get_object_or_404(Task.objects.filter(user=request.user), pk=pk)
+    queryset = get_object_or_404(Todo.objects.filter(user=request.user), pk=pk)
     if request.method == 'GET':
-        serializer = TaskSerializer(queryset)
+        serializer = TodoSerializer(queryset)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = TaskSerializer(queryset, request.data)
+        serializer = TodoSerializer(queryset, request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
             return Response(serializer.data)

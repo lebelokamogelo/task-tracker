@@ -9,7 +9,7 @@ PRIORITY_CHOICES = [
 
 User = settings.AUTH_USER_MODEL
 
-class Task(models.Model):
+class Todo(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, blank=True, null=True)
