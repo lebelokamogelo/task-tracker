@@ -7,12 +7,12 @@ export default function Login() {
   const login = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    const username = formData.get("username")
+    const email = formData.get("email")
     const password = formData.get("password")
     const url = "http://localhost:8000/accounts/login/"
 
     axios
-      .post(url, { username: username, password: password })
+      .post(url, { email: email, password: password })
       .then((res) => res.data)
       .then((data) => {
         const access = data["access"]
@@ -42,13 +42,13 @@ export default function Login() {
                 htmlFor="username"
                 className="block text-lg font-medium leading-6 text-gray-900"
               >
-                Username
+                Email Address
               </label>
               <div className="mt-2">
                 <input
-                  id="username"
-                  name="username"
-                  type="text"
+                  id="email"
+                  name="email"
+                  type="email"
                   className="block w-full rounded-md border-[1px] py-2 px-3 outline-none text-gray-900"
                 />
               </div>

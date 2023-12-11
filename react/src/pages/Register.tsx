@@ -7,13 +7,12 @@ export default function Register() {
   const register = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    const username = formData.get("username")
     const email = formData.get("email")
     const password = formData.get("password")
     const url = "http://localhost:8000/accounts/register/"
 
     axios
-      .post(url, { username: username, email: email, password: password })
+      .post(url, { email: email, password: password })
       .then(() => navigate("/login"))
       .catch((err) => {
         console.log(err.response.data.error)
@@ -33,27 +32,10 @@ export default function Register() {
           <form className="space-y-6" onSubmit={register} method="POST">
             <div>
               <label
-                htmlFor="username"
-                className="block text-lg font-medium leading-6 text-gray-900"
-              >
-                Username
-              </label>
-              <div className="mt-2">
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  className="block w-full rounded-md border-[1px] py-2 px-3 outline-none text-gray-900"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
                 htmlFor="email"
                 className="block text-lg font-medium leading-6 text-gray-900"
               >
-                Email
+                Email address
               </label>
               <div className="mt-2">
                 <input

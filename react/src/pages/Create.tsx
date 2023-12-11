@@ -8,7 +8,7 @@ export default function Create() {
     title: "",
     description: "",
     completed: false,
-    priority: "",
+    priority: "High",
   })
 
   const navigate = useNavigate()
@@ -96,7 +96,6 @@ export default function Create() {
         </div>
         <div>
           <label
-            htmlFor="username"
             className="block text-lg font-medium leading-6 text-gray-900"
           >
             Completed
