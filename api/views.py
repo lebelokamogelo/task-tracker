@@ -37,6 +37,7 @@ def todos(request):
     return Response(serializer.data)
 
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def todo(request, pk):
