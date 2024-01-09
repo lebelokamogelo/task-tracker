@@ -1,5 +1,5 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 PRIORITY_CHOICES = [
     ('Low', 'Low'),
@@ -9,8 +9,10 @@ PRIORITY_CHOICES = [
 
 User = settings.AUTH_USER_MODEL
 
+
 class Todo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,
+                             null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, blank=True, null=True)
     completed = models.BooleanField(default=False)

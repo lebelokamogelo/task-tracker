@@ -1,14 +1,18 @@
 from rest_framework import serializers
-from .models import Todo, User
+
+from .models import Todo
 from .validators import validate_title, Unique
+
 
 class UserSerializer(serializers.Serializer):
     username = serializers.CharField(read_only=True)
+
 
 class TodoSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     url = serializers.SerializerMethodField(read_only=True)
     title = serializers.CharField(validators=[validate_title, Unique])
+
     class Meta:
         model = Todo
         fields = [

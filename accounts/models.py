@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import UserManager
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), blank=True, unique=True)
     is_staff = models.BooleanField(default=False)

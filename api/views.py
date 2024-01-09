@@ -10,8 +10,11 @@ from django.db.models import Q
 
 @api_view(['GET'])
 def home(request):
-    endpoints = ['/api/todos/', '/api/todos/?query=todo', '/api/todo/1/', '/api/todo/1/delete', '/api/todo/1/update/']
+    endpoints = ['/api/todos/', '/api/todos/?query=todo',
+                 '/api/todo/1/', '/api/todo/1/delete',
+                 '/api/todo/1/update/']
     return Response(endpoints)
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -20,7 +23,8 @@ def todos(request):
     if request.method == 'GET':
         query = request.GET.get('query')
         if query is not None:
-            search = ((Q(title=query) | Q(description__icontains=query)) & Q(user=request.user))
+            search = ((Q(title=query) | Q(description__icontains=query))
+                      & Q(user=request.user))
             queryset = Todo.objects.filter(search)
         else:
             queryset = Todo.objects.filter(user=request.user)
@@ -30,12 +34,11 @@ def todos(request):
         serializer = TodoSerializer(data=request_data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors)
     serializer = TodoSerializer(queryset, many=True)
     return Response(serializer.data)
-
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -55,4 +58,5 @@ def todo(request, pk):
 
     elif request.method == 'DELETE':
         queryset.delete()
-        return Response(data={'success': True}, status=status.HTTP_204_NO_CONTENT)
+        return Response(data={'success': True},
+                        status=status.HTTP_204_NO_CONTENT)
