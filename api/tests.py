@@ -9,15 +9,27 @@ from .serializers import TodoSerializer
 
 class TestUser(APITestCase):
     def setUp(self):
-        self.user = User.objects.create(
-            **{"email": "test@example.com", "password": "test1234"})
+        self.user = User.objects.create_user(
+            email="test@example.com",
+            password="test1234"
+        )
+
         self.todo = Todo.objects.create(
             **{"user": self.user, "title": "django test",
                "description": "Test description", "priority": "Low"})
+
         self.client.force_login(self.user)
 
-    def test_user(self):
+    def test_(self):
         self.assertEqual(str(self.todo), 'django test')
+
+    def test_login(self):
+        response = self.client.post(reverse('login'),
+                                    data={
+                                        "email": "test@example.com",
+                                        "password": "test1234"},
+                                    )
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
 
     def test_todo_serializer(self):
         serializer = TodoSerializer(self.todo)
@@ -27,8 +39,8 @@ class TestUser(APITestCase):
         try:
             self.client.post(reverse('todos'),
                              data={"user": self.user,
-                                   "title": "hello", "description":
-                                   "Test description",
+                                   "title": "hello",
+                                   "description": "Test description",
                                    "priority": "Low"})
             raise ValueError("Not allowed")
         except ValueError as e:

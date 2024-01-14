@@ -1,5 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
+from graphql import GraphQLError
 
 from .models import Todo
 
@@ -16,6 +17,9 @@ class Query(graphene.ObjectType):
     def resolve_todos(self, info):
         request = info.context
 
+        if not request.user.is_authenticated:
+            raise GraphQLError('User is not authenticated')
+
         return Todo.objects.filter(user=request.user)
 
 
@@ -29,7 +33,13 @@ class CreateMutation(graphene.Mutation):
     todo = graphene.Field(TodoType)
 
     def mutate(self, info, title, description, completed, priority):
-        todo = Todo(user=info.context.user, title=title, description=description, completed=completed,
+        request = info.context
+
+        if not request.user.is_authenticated:
+            raise GraphQLError('User is not authenticated')
+
+        todo = Todo(user=request.user, title=title, description=description,
+                    completed=completed,
                     priority=priority)
         todo.save()
 
@@ -46,8 +56,14 @@ class UpdateMutation(graphene.Mutation):
 
     todo = graphene.Field(TodoType)
 
-    def mutate(self, info, id, title=None, description=None, completed=None, priority=None):
-        todo = Todo.objects.get(user=info.context.user, id=id)
+    def mutate(self, info, id, title=None, description=None,
+               completed=None, priority=None):
+        request = info.context
+
+        if not request.user.is_authenticated:
+            raise GraphQLError('User is not authenticated')
+
+        todo = Todo.objects.get(user=request.user, id=id)
 
         todo.title = title if title else todo.title
         todo.description = description if description else todo.description
@@ -65,7 +81,12 @@ class DeleteMutation(graphene.Mutation):
     success = graphene.Boolean()
 
     def mutate(self, info, id):
-        todo = Todo.objects.get(user=info.context.user, id=id)
+        request = info.context
+
+        if not request.user.is_authenticated:
+            raise GraphQLError('User is not authenticated')
+
+        todo = Todo.objects.get(user=request.user, id=id)
 
         todo.delete()
         return DeleteMutation(success=True)
