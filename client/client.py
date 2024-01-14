@@ -1,5 +1,6 @@
-import requests
 import json
+
+import requests
 
 auth_token = 'ACCESS_TOKEN'
 headers = {

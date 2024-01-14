@@ -14,9 +14,9 @@ class TestUser(APITestCase):
             password="test1234"
         )
 
-        self.todo = Todo.objects.create(
-            **{"user": self.user, "title": "django test",
-               "description": "Test description", "priority": "Low"})
+        self.todo = Todo.objects.create(user=self.user, title="django test",
+                                        description="Test description",
+                                        priority="Low")
 
         self.client.force_login(self.user)
 

@@ -6,7 +6,7 @@ from .models import User
 class TestUser(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            **{"email": "test@example.com", "password": "test1234"})
+            email="test@example.com", password="test1234")
 
     def test_user(self):
         self.assertEqual(str(self.user), 'test@example.com')
