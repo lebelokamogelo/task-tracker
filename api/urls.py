@@ -6,7 +6,6 @@ from rest_framework_simplejwt.views import (
 )
 
 from . import views
-from .schema import schema
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -16,5 +15,5 @@ urlpatterns = [
          name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(),
          name='token_refresh'),
-    path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema))
+    path('graphql/', GraphQLView.as_view(graphiql=True))
 ]

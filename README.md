@@ -14,8 +14,7 @@ Is a Django Rest Framework (DRF) API designed for simplifying user authenticatio
 - Run your local development server: `python manage.py runserver`
 - Build and run using Docker:
   ```bash
-  docker build -t todo .
-  docker run --name web_api -p 8000:8000 -v ".:/app" todo:latest 
+  docker compose up
 
 ### Usage
 

@@ -2,20 +2,13 @@ import json
 
 import requests
 
-auth_token = 'ACCESS_TOKEN'
 headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + auth_token
-}
-data = {
-    "title": "Testing",
-    "description": "Testing the authentication",
-    "completed": False,
-    "priority": "Medium"
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA1NTAxNDI1LCJpYXQiOjE3MDU0OTk2MjUsImp0aSI6ImIzNTk2NjVhMjg3YzQxODhiYjIxYTZiMjdjOWEwZDJjIiwidXNlcl9pZCI6MX0.BDoPiLpngwGzbPNzxRRzE5NbVQhJuoDldvCdPGewbZc'
 }
 
 try:
-    response = requests.post('http://localhost:8000/api/todos/', headers=headers, json=data)
+    response = requests.get('http://localhost:8000/api/todos/', headers=headers)
     response.raise_for_status()
 
     if response.status_code == 200:

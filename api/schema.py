@@ -1,6 +1,8 @@
 import graphene
+import graphql_jwt
 from graphene_django.types import DjangoObjectType
 from graphql import GraphQLError
+from graphql_jwt.decorators import login_required
 
 from .models import Todo
 
@@ -32,6 +34,7 @@ class CreateMutation(graphene.Mutation):
 
     todo = graphene.Field(TodoType)
 
+    @login_required
     def mutate(self, info, title, description, completed, priority):
         request = info.context
 
@@ -56,6 +59,7 @@ class UpdateMutation(graphene.Mutation):
 
     todo = graphene.Field(TodoType)
 
+    @login_required
     def mutate(self, info, id, title=None, description=None,
                completed=None, priority=None):
         request = info.context
@@ -80,6 +84,7 @@ class DeleteMutation(graphene.Mutation):
 
     success = graphene.Boolean()
 
+    @login_required
     def mutate(self, info, id):
         request = info.context
 
@@ -96,6 +101,9 @@ class Mutation(graphene.ObjectType):
     create = CreateMutation.Field()
     update = UpdateMutation.Field()
     delete = DeleteMutation.Field()
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
